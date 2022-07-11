@@ -26,4 +26,13 @@ function runTheLearningSamples() {
     const sum: number = x + y;
     return sum;
   }
+
+  // Remember, function **expressions** are **not** hoisted to the top of the module.
+  const addNumbersExpression = function (x: number, y: number) {
+    const sum: number = x + y;
+    return sum;
+  }
+
+  console.log(`${prefix} function expression`);
+  console.log(`${addNumbersExpression(5, 8)}`);
 }
