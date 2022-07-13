@@ -1,3 +1,5 @@
+import { productsURL } from "../lib";
+
 const prefix = '🐉 ';
 
 type ProductType = {
@@ -6,9 +8,47 @@ type ProductType = {
   icon?: string,
 };
 
+function layoutProducts(products: ProductType[]) {
+  function makeProductHtml(product: ProductType) : string  {
+    return `
+    <span class="card-id">#${product.id}</span>
+        <i class="card-icon ${product.icon} fa-lg"></i>
+    <span class="card-name">${product.name}</span>
+    `
+  }
+
+  function makeCardHtml(product: ProductType) : string {
+    return `
+    <li>
+        <div class="card">
+            <divmak class="content">
+                ${makeProductHtml(product)}
+            </div>
+        </div>
+    </li>
+    `
+  }
+
+  const items = products.map(p => makeCardHtml(p));
+  const productsHtml = `<ul>${items.join('')}</ul>`
+  return productsHtml;
+}
+
 export default async function updateOutput(id: string) {
   // Note that the `id` parameter is **not** the product ID but the ID of the `div` in the page.
-  // TODO
+  const products = await getProducts();
+  const output = document.querySelector(`#${id}`)
+  const html = layoutProducts(products);
+
+  if (output && html) {
+    output.innerHTML = html;
+  }
+}
+
+async function getProducts(): Promise<ProductType[]> {
+  const response : Response = await fetch(productsURL);
+  let products: ProductType[] = await response.json();
+  return products;
 }
 
 // Run the learning samples. This works even though `runLearningSamples` is not yet defined because JavaScript and
