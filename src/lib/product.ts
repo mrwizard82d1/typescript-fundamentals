@@ -7,6 +7,9 @@ class FoodProduct {
     constructor(public id: number, public name: string, public icon: string) {}
 
     // functions
+    validate() : boolean {
+        return !!this.id && !!this.name && !!this.icon
+    }
 }
 
 let fp = new FoodProduct(1, 'Pizza slice', 'icon.jpg');
