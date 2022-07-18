@@ -1,16 +1,43 @@
-import { productsURL } from '../lib';
+import { productsURL } from "../lib";
 
 const prefix = '🐉 ';
 
 type ProductType = {
-  id: number;
-  name: string;
-  icon?: string;
+  id: number,
+  name: string,
+  icon?: string,
 };
 
-export default async function updateOutput(id: string = 'output') {
+function layoutProducts(products: ProductType[]) {
+  function makeProductHtml(product: ProductType) : string  {
+    return `
+    <span class="card-id">#${product.id}</span>
+        <i class="card-icon ${product.icon} fa-lg"></i>
+    <span class="card-name">${product.name}</span>
+    `
+  }
+
+  function makeCardHtml(product: ProductType) : string {
+    return `
+    <li>
+        <div class="card">
+            <divmak class="content">
+                ${makeProductHtml(product)}
+            </div>
+        </div>
+    </li>
+    `
+  }
+
+  const items = products.map(p => makeCardHtml(p));
+  const productsHtml = `<ul>${items.join('')}</ul>`
+  return productsHtml;
+}
+
+export default async function updateOutput(id: string) {
+  // Note that the `id` parameter is **not** the product ID but the ID of the `div` in the page.
   const products = await getProducts();
-  const output = document.querySelector(`#${id}`);
+  const output = document.querySelector(`#${id}`)
   const html = layoutProducts(products);
 
   if (output && html) {
@@ -18,217 +45,80 @@ export default async function updateOutput(id: string = 'output') {
   }
 }
 
-function layoutProducts(products: ProductType[]) {
-  const items = products.map(({ id, name, icon }) => {
-    const productHtml = `
-    <span class="card-id">#${id}</span>
-      <i class="card-icon ${icon} fa-lg"></i>
-    <span class="card-name">${name}</span>
-    `;
-    const cardHtml = `
-    <li>
-        <div class="card">
-            <div class="card-content">
-                <div class="content">
-                ${productHtml}
-                </div>
-            </div>
-        </div>
-    </li>
-    `;
-    return cardHtml;
-  });
-  let productsHtml = `<ul>${items.join('')}</ul>`;
-  return productsHtml;
-}
-
 async function getProducts(): Promise<ProductType[]> {
-  const response: Response = await fetch(productsURL);
-  const products: ProductType[] = await response.json();
+  const response : Response = await fetch(productsURL);
+  let products: ProductType[] = await response.json();
   return products;
 }
 
-/************************************************
- * Learning sample code.
- ***********************************************/
-
+// Run the learning samples. This works even though `runLearningSamples` is not yet defined because JavaScript and
+// TypeScript hoist functions to the semantic top of the module itself.
 runTheLearningSamples();
 
 function runTheLearningSamples() {
-  // typed parameters
-
   function displayProductInfo(id: number, name: string) {
+    // We are learning about typed parameters
     console.log(`${prefix} typed parameters`);
-    console.log(`Product id=${id.toString()} and name=${name}`);
+    console.log(`product id=${id}, name=${name}`)
   }
 
   displayProductInfo(10, 'Pizza');
 
-  // defining functions
-
-  // function declaration
-  // hoisted
+  // Again, I take advantage of function hoisting
   console.log(`${prefix} function declaration`);
-  console.log(addNumbersDeclaration(7, 11));
+  console.log(`${addNumbersDeclaration(7, 11)}`);
 
-  function addNumbersDeclaration(x: number, y: number) {
+  function addNumbersDeclaration(x: number, y: number): number {
     const sum: number = x + y;
     return sum;
   }
 
-  // function expression (also anonymous)
-  // not hoisted
-  const addNumbersExpression = function (x: number, y: number): number {
+  // Remember, function **expressions** are **not** hoisted to the top of the module.
+  const addNumbersExpression = function (x: number, y: number) {
     const sum: number = x + y;
     return sum;
-  };
+  }
 
   console.log(`${prefix} function expression`);
-  console.log(addNumbersExpression(7, 11));
-
-  // Return Scalar
-
-  // see addNumbersDeclaration
-
-  console.log(`${prefix} return scalar value`);
-  console.log(addNumbersDeclaration(7, 11));
+  console.log(`${addNumbersExpression(5, 8)}`);
 
   const sampleProducts = [
     {
       id: 10,
       name: 'Pizza slice',
-      icon: 'fas fa-pizza-slice',
+      icon: `fas fa-pizza-slice`
     },
     {
-      id: 20,
-      name: 'Ice cream',
-      icon: 'fas fa-ice-cream',
-    },
+      id: 20, name: 'Ice cream', icon: 'fas fa-ice-cream' },
     {
       id: 30,
       name: 'Cheese',
-      icon: 'fas fa-cheese',
+      icon: 'fas fa-cheese'
     },
   ];
 
-  function getProductNames(): string[] {
-    return sampleProducts.map((p) => p.name);
+  function getProductNames() : string[] {
+    return sampleProducts.map((p)=> p.name);
   }
 
   console.log(`${prefix} return array`);
   console.log(getProductNames());
 
-  // Return Types
-
-  // CREATE type ProductType
-
-  function getProductById(id: number): ProductType | undefined {
-    return sampleProducts.find((p) => (id = p.id));
+  function getProductById(id: number) : ProductType | undefined {
+    return sampleProducts.find(p => p.id === id);
   }
 
-  console.log(`${prefix} return ProductType`);
-  console.table(getProductById(10));
+  console.log(`${prefix} ProductType`);
+  console.log(getProductById(10));
+  console.log(getProductById(21));
 
-  // Return void
+  function displayProducts(products: ProductType[]) : void{
+    const productNames = products.map(p => p.name.toLowerCase());
+    const msg = `Sample products include ${productNames.join(', ')}`;
 
-  function displayProducts(products: ProductType[]): void {
-    const productNames = products.map((p) => {
-      const name = p.name.toLowerCase();
-      return name;
-    });
-    const msg = `Sample products include: ${productNames.join(', ')}`;
     console.log(`${prefix} return void`);
-    console.log(msg);
+    console.log(`${msg}`);
   }
 
   displayProducts(sampleProducts);
-
-  // async/await function
-
-  // *** async function getProducts()
-
-  // Arrow functions
-
-  // see function displayProducts()
-  // and layoutProducts()
-  // and getProductById()
-
-  // Optional parameters
-
-  function createProduct(name: string, icon?: string): ProductType {
-    const id = getRandomInt(1000);
-    return {
-      id,
-      name,
-      icon,
-    };
-  }
-
-  const { floor, random } = Math;
-  const getRandomInt = (max: number = 1000) => floor(random() * max);
-
-  console.log(`${prefix} Optional parameters`);
-  let pineapple = createProduct('pineapple', 'pine-apple.jpg');
-  let mango = createProduct('mango');
-  console.log(pineapple, mango);
-
-  // Default parameters
-
-  // modify getRandomInt()
-
-  function createProductWithDefaults(
-    name: string,
-    icon: string = 'generic-fruit.jpg',
-  ): ProductType {
-    const id = getRandomInt();
-    return {
-      id,
-      name,
-      icon,
-    };
-  }
-
-  console.log(`${prefix} Default parameters`);
-  pineapple = createProductWithDefaults('pineapple', 'pine-apple.jpg');
-  mango = createProductWithDefaults('mango');
-  console.log(pineapple, mango);
-
-  // *** updateOutput()
-
-  // Rest parameters
-
-  function buildAddress(
-    street: string,
-    city: string,
-    ...restOfAddress: string[]
-  ) {
-    const address = `${street}, ${city} ${restOfAddress.join(' ')}`;
-    return address;
-  }
-
-  const someAddress = buildAddress(
-    '1 lois lane',
-    'smallville',
-    'apt 101', // rest
-    'area 51', // rest
-    'mystery country', // rest
-  );
-
-  console.log(`${prefix} Rest parameters`);
-  console.log(someAddress);
-
-  // Destructuring parameters
-
-  function displayProduct({ id, name }: ProductType): void {
-    console.log(`${prefix} Destructuring parameters`);
-    console.log(`Product id=${id} and name=${name}`);
-  }
-
-  const prod = getProductById(10);
-  if (prod) {
-    displayProduct(prod);
-  }
-
-  // ~~~ Math destructuring
-  // ~~~ layoutProducts() uses destructuring
 }
