@@ -1,14 +1,10 @@
 class FoodProduct {
     // properties / fields
-    id = 0;
-    name = '';
-    icon = '';
+
     // constructor
-    constructor(id: number, name: string, icon: string) {
-        this.id = id;
-        this.name = name;
-        this.icon = icon;
-    }
+    // This form automatically "maps" parameters to properties of the same name.
+    // This form is called "auto-implemented properties."
+    constructor(public id: number, public name: string, public icon: string) {}
 
     // functions
 }
