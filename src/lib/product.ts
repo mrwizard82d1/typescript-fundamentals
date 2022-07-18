@@ -1,7 +1,13 @@
-class Product {
+class FoodProduct {
     // properties / fields
+    id = 0;
+    name = '';
+    icon = '';
     // constructor
     // functions
 }
 
-let product: Product = new Product();
+let fp = new FoodProduct();
+fp.id = 1;
+fp.name = 'Pizza slice';
+fp.icon = 'icon.jpg';
