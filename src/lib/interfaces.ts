@@ -15,3 +15,13 @@ type ProductAlias =
     }
 
 let product: ProductAlias = 'Food';
+
+enum ProductType {
+    Sporting,
+    Home
+}
+let pt: ProductType = ProductType.Sporting;
+
+// A "string literal" type. The string must be the union of the string literals
+type ProductTypeList = 'SPORTING' | 'HOME';
+let ptl: ProductTypeList = 'SPORTING';
