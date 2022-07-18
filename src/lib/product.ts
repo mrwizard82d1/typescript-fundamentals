@@ -4,10 +4,13 @@ class FoodProduct {
     name = '';
     icon = '';
     // constructor
+    constructor(id: number, name: string, icon: string) {
+        this.id = id;
+        this.name = name;
+        this.icon = icon;
+    }
+
     // functions
 }
 
-let fp = new FoodProduct();
-fp.id = 1;
-fp.name = 'Pizza slice';
-fp.icon = 'icon.jpg';
+let fp = new FoodProduct(1, 'Pizza slice', 'icon.jpg');
