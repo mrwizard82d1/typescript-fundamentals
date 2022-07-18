@@ -1,4 +1,4 @@
-class FoodProduct {
+export class FoodProduct {
     // properties / fields
 
     // constructor
