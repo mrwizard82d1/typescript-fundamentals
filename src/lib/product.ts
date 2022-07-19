@@ -1,4 +1,4 @@
-class ProductBase {
+abstract class ProductBase {
     // constructor
     // This form automatically "maps" parameters to properties of the same name.
     // This form is called "auto-implemented properties."
@@ -8,6 +8,9 @@ class ProductBase {
         throw new Error('Not implemented');
     }
 }
+
+
+let pb = new ProductBase(1, 'foo', 'bar');
 
 export class FoodProduct extends ProductBase {
     // functions
