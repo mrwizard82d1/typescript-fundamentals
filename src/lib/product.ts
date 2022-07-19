@@ -1,4 +1,7 @@
-abstract class ProductBase {
+import {Product} from "./interfaces"
+
+
+abstract class ProductBase implements Product {
     // constructor
     // This form automatically "maps" parameters to properties of the same name.
     // This form is called "auto-implemented properties."
@@ -10,17 +13,9 @@ abstract class ProductBase {
 }
 
 
-let pb = new ProductBase(1, 'foo', 'bar');
-
 export class FoodProduct extends ProductBase {
     // functions
     validate() : boolean {
         return !!this.id && !!this.name && !!this.icon
-    }
-}
-
-class SportingGoodsProduct extends ProductBase {
-    constructor (id: number, name: string, icon: string) {
-        super(id, name, icon);
     }
 }
